@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from 'react-router-dom'
+import './App.css'
+import LandingPageLayout from './Layout/LandingPage'
+import Product from './Component/Product/Product'
+import ContactUs from './Component/ContactUs'
+import SignUp from './Pages/Register'
+import Login from './Pages/Login'
+import ProductList from './Component/Product/ProductList'
+import { products } from './data'
+import { useParams } from 'react-router-dom'
 
-function App() {
+const App = () => {
+  const ProductWithID = ({ match }) => {
+    const params = useParams()
+    return (
+      <ProductList
+        product={products.find(
+          (product) => product.id === parseInt(params.productId, 10),
+        )}
+      />
+    )
+  }
+
+  console.log(products)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <LandingPageLayout heading="Banner Here">
+      <Routes>
+        <Route path="/" element={<Product products={products} />} />
+        <Route path=":productId" element={<ProductWithID />} />
+
+        <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </LandingPageLayout>
+  )
 }
 
-export default App;
+export default App
